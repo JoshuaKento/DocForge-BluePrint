@@ -1,52 +1,39 @@
-# DocForge-BluePrint Manual
+# DocForge-BluePrint Usage Manual
 
-This document explains how to set up and use the **DocForge-BluePrint** application.
+This guide explains how to generate documentation packages with **DocForge-BluePrint**. It assumes the application is already running.
 
-## Prerequisites
+## 1. Open the Home Page
 
-- **Node.js 20** and **pnpm** (version 9 or later) should be installed.
-- Optionally configure the environment variables listed in the `README.md`.
+Navigate to the application's root URL in your browser. You should see a form with several fields describing your project.
 
-## Installation
+## 2. Fill in Project Details
 
-1. Install project dependencies:
-   ```bash
-   pnpm i
-   ```
-2. (Optional) Install Playwright browsers if you intend to run the tests:
-   ```bash
-   pnpm exec playwright install
-   ```
+Provide the following information:
 
-## Running in Development
+- **Project Name** – name of the project to include in all documents.
+- **Problem** – short summary of the problem the project solves.
+- **Persona** – who the project is for.
+- **KPI** – key performance indicator you want to track.
+- **Author Name** – name shown in the generated files.
+- **License** – select MIT, Apache‑2.0, or GPL‑3.0.
+- **GitHub Token** – optional token for future GitHub integration.
+- **Generate PDF** – optional check box (PDF generation is not implemented yet).
 
-Start the development server on `http://localhost:3000`:
-```bash
-pnpm dev
-```
-The homepage provides a form for generating documentation. Complete the fields and click **Next**. On the second step press **Generate** to download `docs.zip` containing the generated files.
+Click **Next** to review your inputs.
 
-## Building for Production
+## 3. Generate the Package
 
-To create a production build run:
-```bash
-pnpm build
-```
-Serve the built app with:
-```bash
-pnpm start
-```
+On the next step, press **Generate**. Your browser will download `docs.zip` containing the following files:
 
-## API Endpoints
+- `product-brief.md`
+- `adr/0001-record-architecture.md`
+- `PULL_REQUEST_TEMPLATE.md`
+- `.github/workflows/ci.yml`
+- `threatmodel.json`
+- `openapi.yaml`
 
-- `POST /api/gen` – accepts the form data as JSON and returns a zip archive with generated documents.
-- `POST /api/pdf` – placeholder endpoint for PDF generation.
+Extract `docs.zip` to view or edit these documents.
 
-## Testing
+## 4. Programmatic Usage
 
-Automated tests are written with [Playwright](https://playwright.dev/). Run them with:
-```bash
-pnpm test
-```
-The tests expect Playwright browsers to be installed.
-
+The form submits data to the `POST /api/gen` endpoint. You can call this endpoint yourself with the same JSON fields if you want to automate package creation.
