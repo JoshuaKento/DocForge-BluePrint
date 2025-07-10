@@ -3,6 +3,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import Stepper from './components/Stepper';
+import Card from './components/Card';
+import Input from './components/Input';
+import Textarea from './components/Textarea';
+import Button from './components/Button';
+import MarkdownPreview from './components/MarkdownPreview';
 
 const schema = z.object({
   projectName: z.string(),
@@ -22,6 +28,7 @@ export default function Home() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
@@ -39,39 +46,63 @@ export default function Home() {
     a.click();
   };
 
-  if (step === 2) {
-    return (
-      <div className="p-8 space-y-4">
-        <button onClick={() => setStep(1)} className="underline">
-          Back
-        </button>
-        <button onClick={handleSubmit(onSubmit)} className="bg-blue-500 px-4 py-2 text-white">
-          Generate
-        </button>
-      </div>
-    );
-  }
+  const values = watch();
+  const preview = `# ${values.projectName || ''}
+
+${values.problem || ''}
+
+## Persona
+${values.persona || ''}
+
+## KPI
+${values.kpi || ''}
+
+Author: ${values.authorName || ''}
+License: ${values.license || ''}`;
 
   return (
-    <form onSubmit={handleSubmit(() => setStep(2))} className="p-8 space-y-4">
-      <input placeholder="Project Name" {...register('projectName')} className="border p-2 w-full" />
-      {errors.projectName && <p className="text-red-500">Required</p>}
-      <textarea placeholder="Problem" {...register('problem')} className="border p-2 w-full" />
-      <input placeholder="Persona" {...register('persona')} className="border p-2 w-full" />
-      <input placeholder="KPI" {...register('kpi')} className="border p-2 w-full" />
-      <input placeholder="Author Name" {...register('authorName')} className="border p-2 w-full" />
-      <select {...register('license')} className="border p-2 w-full">
-        <option value="MIT">MIT</option>
-        <option value="Apache-2.0">Apache-2.0</option>
-        <option value="GPL-3.0">GPL-3.0</option>
-      </select>
-      <input placeholder="GitHub Token" {...register('gitToken')} className="border p-2 w-full" />
-      <label className="flex items-center gap-2">
-        <input type="checkbox" {...register('generatePdf')} /> Generate PDF
-      </label>
-      <button type="submit" className="bg-blue-500 px-4 py-2 text-white">
-        Next
-      </button>
-    </form>
+    <div className="grid md:grid-cols-[150px_1fr] min-h-screen">
+      <aside className="p-4 border-r">
+        <Stepper step={step} />
+      </aside>
+      <main className="p-4 space-y-4">
+        {step === 1 && (
+          <div className="grid md:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit(() => setStep(2))} className="space-y-4">
+              <Input placeholder="Project Name" {...register('projectName')} />
+              {errors.projectName && <p className="text-red-500 text-sm">Required</p>}
+              <Textarea placeholder="Problem" {...register('problem')} />
+              <Input placeholder="Persona" {...register('persona')} />
+              <Input placeholder="KPI" {...register('kpi')} />
+              <Input placeholder="Author Name" {...register('authorName')} />
+              <select {...register('license')} className="border p-2 w-full rounded bg-transparent">
+                <option value="MIT">MIT</option>
+                <option value="Apache-2.0">Apache-2.0</option>
+                <option value="GPL-3.0">GPL-3.0</option>
+              </select>
+              <Input placeholder="GitHub Token" {...register('gitToken')} />
+              <label className="flex items-center gap-2">
+                <input type="checkbox" {...register('generatePdf')} /> Generate PDF
+              </label>
+              <Button type="submit">Next</Button>
+            </form>
+            <Card>
+              <MarkdownPreview source={preview} />
+            </Card>
+          </div>
+        )}
+        {step === 2 && (
+          <div className="space-y-4">
+            <Button onClick={() => setStep(1)} className="bg-transparent text-blue-500 px-0 underline">
+              Back
+            </Button>
+            <Button onClick={handleSubmit(onSubmit)}>Generate</Button>
+            <Card>
+              <MarkdownPreview source={preview} />
+            </Card>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
