@@ -10,12 +10,14 @@
     "test": "playwright test"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@octokit/rest": "^22.0.0",
     "handlebars": "^4.7.8",
     "jszip": "^3.10.1",
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.51.3",
     "zod": "^4.0.2"
   },
   "devDependencies": {
