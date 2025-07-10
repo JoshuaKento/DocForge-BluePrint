@@ -4,6 +4,9 @@ Document Generation suite for Software Development
 
 ## Getting Started
 
+For detailed usage instructions, see [MANUAL.md](./MANUAL.md).
+
+
 ```bash
 pnpm i && vercel dev
 ```
