@@ -6,6 +6,8 @@ This guide explains how to generate documentation packages with **DocForge-BlueP
 
 Navigate to the application's root URL in your browser. You should see a form with several fields describing your project.
 
+The page also features a sidebar with a stepper and a live preview panel that updates as you type.
+
 ## 2. Fill in Project Details
 
 Provide the following information:
