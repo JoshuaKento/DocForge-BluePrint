@@ -61,8 +61,8 @@ Author: ${values.authorName || ''}
 License: ${values.license || ''}`;
 
   return (
-    <div className="grid md:grid-cols-[150px_1fr] min-h-screen">
-      <aside className="p-4 border-r">
+    <div className="grid md:grid-cols-[200px_1fr] min-h-screen">
+      <aside className="p-4 border-r border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-900">
         <Stepper step={step} />
       </aside>
       <main className="p-4 space-y-4">
@@ -75,14 +75,14 @@ License: ${values.license || ''}`;
               <Input placeholder="Persona" {...register('persona')} />
               <Input placeholder="KPI" {...register('kpi')} />
               <Input placeholder="Author Name" {...register('authorName')} />
-              <select {...register('license')} className="border p-2 w-full rounded bg-transparent">
+              <select {...register('license')} className="w-full rounded border border-gray-300 bg-white dark:bg-neutral-800 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="MIT">MIT</option>
                 <option value="Apache-2.0">Apache-2.0</option>
                 <option value="GPL-3.0">GPL-3.0</option>
               </select>
               <Input placeholder="GitHub Token" {...register('gitToken')} />
-              <label className="flex items-center gap-2">
-                <input type="checkbox" {...register('generatePdf')} /> Generate PDF
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" {...register('generatePdf')} className="accent-blue-600" /> Generate PDF
               </label>
               <Button type="submit">Next</Button>
             </form>
@@ -93,7 +93,7 @@ License: ${values.license || ''}`;
         )}
         {step === 2 && (
           <div className="space-y-4">
-            <Button onClick={() => setStep(1)} className="bg-transparent text-blue-500 px-0 underline">
+            <Button onClick={() => setStep(1)} className="bg-transparent text-blue-600 px-0 underline shadow-none hover:text-blue-700">
               Back
             </Button>
             <Button onClick={handleSubmit(onSubmit)}>Generate</Button>

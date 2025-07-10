@@ -4,7 +4,7 @@ const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>
   ({ className = '', ...props }, ref) => (
     <input
       ref={ref}
-      className={`border p-2 w-full rounded bg-transparent ${className}`}
+      className={`w-full rounded border border-gray-300 bg-white dark:bg-neutral-800 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${className}`}
       {...props}
     />
   )
