@@ -1,3 +1,63 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/app/api/gen/route.ts b/app/api/gen/route.ts
+index b3772d1fbcb73085a71fd2d353ad0d7112611ab1..52746ef830394576d397ff4a8714f63114c6be35 100644
+--- a/app/api/gen/route.ts
++++ b/app/api/gen/route.ts
+@@ -1,26 +1,26 @@
+-export const runtime = "edge";
++export const runtime = 'nodejs';
+ import { NextRequest } from 'next/server';
+ import { z } from 'zod';
+ import Handlebars from 'handlebars';
+ import JSZip from 'jszip';
+ import { templates } from '@/lib/templates';
+ 
+ const schema = z.object({
+   projectName: z.string(),
+   problem: z.string(),
+   persona: z.string(),
+   kpi: z.string(),
+   authorName: z.string(),
+   license: z.enum(['MIT', 'Apache-2.0', 'GPL-3.0']),
+   gitToken: z.string().optional(),
+   generatePdf: z.boolean(),
+ });
+ 
+ export async function POST(req: NextRequest) {
+   const body = await req.json();
+   const result = schema.safeParse(body);
+   if (!result.success) {
+     return new Response('Invalid input', { status: 422 });
+   }
+ 
+   const zip = new JSZip();
+diff --git a/lib/templates.ts b/lib/templates.ts
+index 281e6b6867ebde09b253f85e12f3ea3c8bd2a2b0..5f168e25bc9c55330a981ac634a0c4685c66dea7 100644
+--- a/lib/templates.ts
++++ b/lib/templates.ts
+@@ -1,5 +1,17 @@
+-export const templates = Object.fromEntries(
+-  Object.entries(
+-    import.meta.glob('../templates/**/*', { as: 'raw', eager: true })
+-  ).map(([key, value]) => [key.replace('../templates/', ''), value as string])
+-);
++import { readFileSync } from 'node:fs';
++import { dirname, join } from 'node:path';
++import { fileURLToPath } from 'node:url';
++
++const __dirname = dirname(fileURLToPath(import.meta.url));
++function load(name: string) {
++  return readFileSync(join(__dirname, '..', 'templates', name), 'utf8');
++}
++
++export const templates: Record<string, string> = {
++  'product-brief.md.hbs': load('product-brief.md.hbs'),
++  'adr/0001-record-architecture.md.hbs': load('adr/0001-record-architecture.md.hbs'),
++  'PULL_REQUEST_TEMPLATE.md.hbs': load('PULL_REQUEST_TEMPLATE.md.hbs'),
++  '.github/workflows/ci.yml.hbs': load('.github/workflows/ci.yml.hbs'),
++  'threatmodel.json.hbs': load('threatmodel.json.hbs'),
++  'openapi.yaml.hbs': load('openapi.yaml.hbs'),
++};
 diff --git a/package.json b/package.json
 index 18717d7dabbef6ff8df6b765d53dd3534db6013a..60d285ced75b5f4245badb0b9f5b4dfb5c86841e 100644
 --- a/package.json
@@ -328,3 +388,6 @@ index 7fe00deca1345bf5e71616b7739606e9f6cda9ba..47ee80107b95a721c5c66b06d26ee0fe
        get-proto: 1.0.1
        which-builtin-type: 1.2.1
  
+ 
+EOF
+)
