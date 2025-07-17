@@ -1,4 +1,32 @@
 {
+  "version": "1.0",
   "project": "{{projectName}}",
-  "threats": []
+  "generated": "{{createdDate}}",
+  "assets": [
+    {"id":"input-form","name":"User Input Form","type":"UI"},
+    {"id":"edge-function","name":"Edge Function /api/gen","type":"Service"},
+    {"id":"github-api","name":"GitHub REST API","type":"External"},
+    {"id":"zip-output","name":"Generated Zip","type":"Artifact"}
+  ],
+  "dataflows": [
+    {"from":"input-form","to":"edge-function","data":"GenerationInput JSON"},
+    {"from":"edge-function","to":"github-api","data":"Repo create + files","conditional":true},
+    {"from":"edge-function","to":"zip-output","data":"Docs bundle"}
+  ],
+  "threats": [
+    {
+      "id":"T1",
+      "stride":"Spoofing",
+      "asset":"github-api",
+      "desc":"Attacker uses stolen PAT to create repos.",
+      "mitigations":["Use least-privilege PAT","Do not store tokens server-side"]
+    },
+    {
+      "id":"T2",
+      "stride":"Information Disclosure",
+      "asset":"zip-output",
+      "desc":"Generated docs leak private info from form.",
+      "mitigations":["Warn user before generation","Client-side validation","Support redaction flags"]
+    }
+  ]
 }

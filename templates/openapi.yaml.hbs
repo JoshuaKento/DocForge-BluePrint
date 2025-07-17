@@ -1,5 +1,58 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
-  title: {{projectName}}
-  version: 0.1.0
-paths: {}
+  title: {{projectName}} API
+  version: {{version}}
+  description: >
+    {{#if (eq lang "ja")}}
+    DocForge 自動ドキュメント生成 API の OpenAPI 雛形。
+    {{else}}
+    OpenAPI stub for the DocForge auto-doc generation API.
+    {{/if}}
+servers:
+  - url: https://{domain}
+    variables:
+      domain:
+        default: example.vercel.app
+paths:
+  /api/gen:
+    post:
+      summary: Generate docs bundle
+      description: >
+        {{#if (eq lang "ja")}}入力JSONからドキュメントZIPを生成{{else}}Generate docs ZIP from input JSON{{/if}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerationInput'
+      responses:
+        '200':
+          description: Docs ZIP or generation accepted.
+          content:
+            application/zip: {}
+        '422':
+          description: Validation error.
+components:
+  schemas:
+    GenerationInput:
+      type: object
+      required:
+        - projectName
+        - problem
+        - persona
+        - kpi
+        - authorName
+        - license
+      properties:
+        projectName: { type: string }
+        problem: { type: string }
+        persona: { type: string }
+        kpi: { type: string }
+        authorName: { type: string }
+        authorEmail: { type: string, format: email }
+        license:
+          type: string
+          enum: [MIT, Apache-2.0, GPL-3.0]
+        gitToken: { type: string, description: "GitHub PAT (optional)" }
+        generatePdf: { type: boolean, default: false }
+        lang: { type: string, enum: [ja, en], default: ja }
