@@ -6,7 +6,7 @@ This guide explains how to generate documentation packages with **DocForge-BlueP
 
 Navigate to the application's root URL in your browser. You should see a form with several fields describing your project.
 
-The page also features a sidebar with a stepper and a live preview panel that updates as you type.
+The page also features a sidebar with a stepper and a live preview panel that updates as you type. After filling out the form and clicking **Next**, you can browse all generated files in a tabbed preview area before downloading them.
 
 ## 2. Fill in Project Details
 
@@ -23,7 +23,7 @@ Provide the following information:
 - **Language** – choose Japanese or English for output.
 - **Generate PDF** – optional check box (PDF generation is not implemented yet).
 
-Click **Next** to review your inputs.
+Click **Next** to review your inputs. The second step shows a tabbed preview of every file that will be included in the ZIP.
 
 ## 3. Generate the Package
 

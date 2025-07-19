@@ -9,6 +9,7 @@ import Input from './components/Input';
 import Textarea from './components/Textarea';
 import Button from './components/Button';
 import MarkdownPreview from './components/MarkdownPreview';
+import DocumentTabs from './components/DocumentTabs';
 
 const schema = z.object({
   projectName: z.string(),
@@ -104,9 +105,7 @@ License: ${values.license || ''}`;
               Back
             </Button>
             <Button onClick={handleSubmit(onSubmit)}>Generate</Button>
-            <Card>
-              <MarkdownPreview source={preview} />
-            </Card>
+            <DocumentTabs values={values} />
           </div>
         )}
       </main>
