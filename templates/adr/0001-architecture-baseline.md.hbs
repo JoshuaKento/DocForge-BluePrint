@@ -1,0 +1,14 @@
+{{!-- adr/0001-architecture-baseline.md.hbs --}}
+# ADR-0001: Architecture Baseline for {{projectName}}
+
+- **Status:** Proposed
+- **Date:** {{createdDate}}
+- **Context:** Need a lightweight, reproducible way to scaffold planning docs for new projects.
+- **Decision:** Use Next.js (App Router) on Vercel; Handlebars templates; JSZip packaging; optional GitHub repo bootstrap via Octokit.
+- **Consequences:**
+  - ✅ Fast, serverless-friendly generation.
+  - ✅ Easy template customization.
+  - ⚠️ Large binary deps (Chromium for PDF) must stay in Serverless Fn (not Edge).
+  - ⚠️ Output quality depends on user-provided metadata.
+
+> Update future ADRs if stack changes (DB, auth, etc.).

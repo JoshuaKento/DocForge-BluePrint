@@ -9,6 +9,7 @@ import Input from './components/Input';
 import Textarea from './components/Textarea';
 import Button from './components/Button';
 import MarkdownPreview from './components/MarkdownPreview';
+import DocumentTabs from './components/DocumentTabs';
 
 const schema = z.object({
   projectName: z.string(),
@@ -16,9 +17,11 @@ const schema = z.object({
   persona: z.string(),
   kpi: z.string(),
   authorName: z.string(),
+  authorEmail: z.string().email().optional(),
   license: z.enum(['MIT', 'Apache-2.0', 'GPL-3.0']),
   gitToken: z.string().optional(),
   generatePdf: z.boolean().optional(),
+  lang: z.enum(['ja', 'en']).default('ja'),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -75,12 +78,17 @@ License: ${values.license || ''}`;
               <Input placeholder="Persona" {...register('persona')} />
               <Input placeholder="KPI" {...register('kpi')} />
               <Input placeholder="Author Name" {...register('authorName')} />
+              <Input placeholder="Author Email" {...register('authorEmail')} />
               <select {...register('license')} className="border p-2 w-full rounded bg-transparent">
                 <option value="MIT">MIT</option>
                 <option value="Apache-2.0">Apache-2.0</option>
                 <option value="GPL-3.0">GPL-3.0</option>
               </select>
               <Input placeholder="GitHub Token" {...register('gitToken')} />
+              <select {...register('lang')} className="border p-2 w-full rounded bg-transparent">
+                <option value="ja">Japanese</option>
+                <option value="en">English</option>
+              </select>
               <label className="flex items-center gap-2">
                 <input type="checkbox" {...register('generatePdf')} /> Generate PDF
               </label>
@@ -97,9 +105,7 @@ License: ${values.license || ''}`;
               Back
             </Button>
             <Button onClick={handleSubmit(onSubmit)}>Generate</Button>
-            <Card>
-              <MarkdownPreview source={preview} />
-            </Card>
+            <DocumentTabs values={values} />
           </div>
         )}
       </main>
